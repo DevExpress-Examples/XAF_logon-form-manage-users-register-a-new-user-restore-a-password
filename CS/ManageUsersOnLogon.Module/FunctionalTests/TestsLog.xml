@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<Tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Date="1/19/2015">
+  <Test Name="E4037" ApplicationName="ManageUsersOnLogon.Web" Result="Warning" Elapsed="00:00:17.7740812" Started="1/19/2015 12:31:36 PM" ApplicationViews="E4037_ManageUsersOnLogon.Web_View.jpeg;E4037_ManageUsersOnLogon.Web_View.html" MachineName="GARAVSKY-SV-NB" IP="172.22.4.190">
+    <Error Type="System.UnauthorizedAccessException">
+      <Message><![CDATA[Access is denied.
+================================================================================
+The error occurred:
+
+	Type:       UnauthorizedAccessException
+	Message:    Access is denied.
+
+	Data:       0 entries
+	Stack trace:
+
+   at System.Runtime.InteropServices.Marshal.ThrowExceptionForHRInternal(Int32 errorCode, IntPtr errorInfo)
+   at System.Runtime.InteropServices.Marshal.ThrowExceptionForHR(Int32 errorCode)
+   at System.Runtime.InteropServices.CustomMarshalers.ExpandoViewOfDispatchEx.DispExInvoke(String pstrMemberName, Int32 MemberDispID, Int32 Flags, Binder pBinder, Object[] aArgs, ParameterModifier[] aModifiers, CultureInfo pCultureInfo, String[] astrNamedParameters)
+   at System.Runtime.InteropServices.CustomMarshalers.DispatchExMethodInfo.Invoke(Object pObj, BindingFlags invokeAttr, Binder pBinder, Object[] aParameters, CultureInfo pCulture)
+   at System.Runtime.InteropServices.CustomMarshalers.DispatchExPropertyInfo.GetValue(Object pObj, BindingFlags invokeAttr, Binder binder, Object[] aIndex, CultureInfo culture)
+   at System.Reflection.PropertyInfo.GetValue(Object obj, Object[] index)
+   at DevExpress.ExpressApp.EasyTest.WebAdapter.WebCommandAdapter.<>c__DisplayClasse.<GetIReflectTestControlCore>b__9(Object obj)
+   at DevExpress.ExpressApp.EasyTest.WebAdapter.WebCommandAdapter.ExecuteTimeoutFunction(Int32 timeoutMilliseconds, Int32 sleepTime, Predicate`1 predicate, Func`1 onTimeoutPredicate)
+   at DevExpress.ExpressApp.EasyTest.WebAdapter.WebCommandAdapter.GetIReflectTestControlCore(String testControlsName, IHTMLDocument2 doc)
+   at DevExpress.ExpressApp.EasyTest.WebAdapter.WebCommandAdapter.GetIReflectTestControl(String testControlsName, IHTMLDocument2 doc)
+   at DevExpress.ExpressApp.EasyTest.WebAdapter.WebCommandAdapter.UpdateTestControls()
+   at DevExpress.ExpressApp.EasyTest.WebAdapter.WebCommandAdapter.WaitForBrowserResponse(Boolean waitPostback, Boolean isSecondCall)
+   at DevExpress.ExpressApp.EasyTest.WebAdapter.WebAdapter.CreateCommandAdapter()
+   at DevExpress.EasyTest.Framework.TestExecutor.CreateCommandAdapterCore(IApplicationAdapter adapter)
+   at DevExpress.EasyTest.Framework.TestExecutor.ExecuteCommands(IApplicationAdapter adapter, String& applicationName)
+	InnerException is null
+]]></Message>
+    </Error>
+  </Test>
+</Tests>
