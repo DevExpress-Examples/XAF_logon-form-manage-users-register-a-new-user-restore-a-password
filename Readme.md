@@ -1,3 +1,13 @@
+<!-- default file list -->
+*Files to look at*:
+
+* [Updater.cs](./CS/ManageUsersOnLogon.Module/DatabaseUpdate/Updater.cs) (VB: [Updater.vb](./VB/ManageUsersOnLogon.Module/DatabaseUpdate/Updater.vb))
+* [E4037.ets](./CS/ManageUsersOnLogon.Module/FunctionalTests/E4037.ets) (VB: [E4037.ets](./VB/ManageUsersOnLogon.Module/FunctionalTests/E4037.ets))
+* [LogonActionParameters.cs](./CS/Security.Extensions/LogonActionParameters.cs) (VB: [LogonActionParameters.vb](./VB/Security.Extensions/LogonActionParameters.vb))
+* [ManageUsersOnLogonController.cs](./CS/Security.Extensions/ManageUsersOnLogonController.cs) (VB: [ManageUsersOnLogonController.vb](./VB/Security.Extensions/ManageUsersOnLogonController.vb))
+* [Model.DesignedDiffs.xafml](./CS/Security.Extensions/Model.DesignedDiffs.xafml) (VB: [Model.DesignedDiffs.xafml](./VB/Security.Extensions/Model.DesignedDiffs.xafml))
+* [Module.cs](./CS/Security.Extensions/Module.cs) (VB: [Module.vb](./VB/Security.Extensions/Module.vb))
+<!-- default file list end -->
 # OBSOLETE - How to manage users (register a new user, restore a password, etc.) from the logon form in ASP.NET
 
 
