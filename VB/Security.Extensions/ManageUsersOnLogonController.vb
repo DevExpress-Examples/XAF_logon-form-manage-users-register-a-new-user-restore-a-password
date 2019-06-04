@@ -108,7 +108,7 @@ Namespace Security.Extensions
         End Sub
         Protected Overridable Sub AcceptParameters(ByVal parameters As LogonActionParametersBase)
             Guard.ArgumentNotNull(parameters, "parameters")
-            parameters.ExecuteBusinessLogic(Application.CreateObjectSpace())
+            parameters.ExecuteBusinessLogic(Application.CreateObjectSpace(SecurityExtensionsModule.SecuritySystemUserType))
             'Dennis: Some additional UI-level logic is necessary depending on the parameters type.
             Dim registerUserParameters As RegisterUserParameters = TryCast(parameters, RegisterUserParameters)
             If registerUserParameters IsNot Nothing Then
