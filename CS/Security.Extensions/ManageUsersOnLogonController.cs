@@ -75,7 +75,7 @@ namespace Security.Extensions {
         }
         protected virtual void AcceptParameters(LogonActionParametersBase parameters) {
             Guard.ArgumentNotNull(parameters, "parameters");
-            parameters.ExecuteBusinessLogic(Application.CreateObjectSpace());
+            parameters.ExecuteBusinessLogic(Application.CreateObjectSpace(SecurityExtensionsModule.SecuritySystemUserType));
             //Dennis: Some additional UI-level logic is necessary depending on the parameters type.
             RegisterUserParameters registerUserParameters = parameters as RegisterUserParameters;
             if (registerUserParameters != null) {
