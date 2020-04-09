@@ -2,8 +2,11 @@
 Imports System.Collections.Generic
 Imports System.ComponentModel
 Imports DevExpress.ExpressApp
+Imports DevExpress.ExpressApp.Security
+Imports DevExpress.ExpressApp.Security.ClientServer
 Imports DevExpress.ExpressApp.Web
 Imports DevExpress.ExpressApp.Xpo
+Imports DevExpress.Persistent.BaseImpl.PermissionPolicy
 
 Namespace ManageUsersOnLogon.Web
     Partial Public Class ManageUsersOnLogonAspNetApplication
@@ -21,12 +24,27 @@ Namespace ManageUsersOnLogon.Web
 
         Public Sub New()
             InitializeComponent()
+            Dim secur = (CType(Security, SecurityStrategy))
+            secur.AnonymousAllowedTypes.Add(GetType(PermissionPolicyUser))
+            secur.AnonymousAllowedTypes.Add(GetType(PermissionPolicyRole))
         End Sub
 
         Protected Overrides Sub CreateDefaultObjectSpaceProvider(ByVal args As CreateCustomObjectSpaceProviderEventArgs)
-            args.ObjectSpaceProvider = New XPObjectSpaceProvider(args.ConnectionString, args.Connection, True)
+            args.ObjectSpaceProvider = New SecuredObjectSpaceProvider(DirectCast(Me.Security, ISelectDataSecurityProvider), GetDataStoreProvider(args.ConnectionString, args.Connection), True)
         End Sub
-
+        Private Function GetDataStoreProvider(ByVal connectionString As String, ByVal connection As System.Data.IDbConnection) As IXpoDataStoreProvider
+            Dim application As System.Web.HttpApplicationState = If((System.Web.HttpContext.Current IsNot Nothing), System.Web.HttpContext.Current.Application, Nothing)
+            Dim dataStoreProvider As IXpoDataStoreProvider = Nothing
+            If Not application Is Nothing AndAlso application("DataStoreProvider") IsNot Nothing Then
+                dataStoreProvider = TryCast(application("DataStoreProvider"), IXpoDataStoreProvider)
+            Else
+                dataStoreProvider = XPObjectSpaceProvider.GetDataStoreProvider(connectionString, connection, True)
+                If Not application Is Nothing Then
+                    application("DataStoreProvider") = dataStoreProvider
+                End If
+            End If
+            Return dataStoreProvider
+        End Function
         Private Sub ManageUsersOnLogonAspNetApplication_DatabaseVersionMismatch(ByVal sender As Object, ByVal e As DevExpress.ExpressApp.DatabaseVersionMismatchEventArgs) Handles MyBase.DatabaseVersionMismatch
 #If EASYTEST Then
             e.Updater.Update()
