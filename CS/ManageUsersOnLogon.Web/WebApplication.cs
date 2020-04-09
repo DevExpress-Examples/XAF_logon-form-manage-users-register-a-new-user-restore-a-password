@@ -6,6 +6,7 @@ using DevExpress.ExpressApp.Security;
 using DevExpress.ExpressApp.Security.ClientServer;
 using DevExpress.ExpressApp.Web;
 using DevExpress.ExpressApp.Xpo;
+using DevExpress.Persistent.BaseImpl.PermissionPolicy;
 
 namespace ManageUsersOnLogon.Web {
     public partial class ManageUsersOnLogonAspNetApplication : WebApplication {
@@ -21,6 +22,8 @@ namespace ManageUsersOnLogon.Web {
 
         public ManageUsersOnLogonAspNetApplication() {
             InitializeComponent();
+            ((SecurityStrategy)Security).AnonymousAllowedTypes.Add(typeof(PermissionPolicyUser));
+            ((SecurityStrategy)Security).AnonymousAllowedTypes.Add(typeof(PermissionPolicyRole));
         }
 
         protected override void CreateDefaultObjectSpaceProvider(CreateCustomObjectSpaceProviderEventArgs args) {
