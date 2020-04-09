@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using DevExpress.ExpressApp;
+using DevExpress.ExpressApp.Security;
+using DevExpress.ExpressApp.Security.ClientServer;
 using DevExpress.ExpressApp.Web;
 using DevExpress.ExpressApp.Xpo;
 
@@ -22,7 +24,8 @@ namespace ManageUsersOnLogon.Web {
         }
 
         protected override void CreateDefaultObjectSpaceProvider(CreateCustomObjectSpaceProviderEventArgs args) {
-            args.ObjectSpaceProvider = new XPObjectSpaceProvider(args.ConnectionString, args.Connection, true);
+            args.ObjectSpaceProviders.Add(new SecuredObjectSpaceProvider((SecurityStrategyComplex)Security, XPObjectSpaceProvider.GetDataStoreProvider(args.ConnectionString, args.Connection, true), false));
+            
         }
 
         private void ManageUsersOnLogonAspNetApplication_DatabaseVersionMismatch(object sender, DevExpress.ExpressApp.DatabaseVersionMismatchEventArgs e) {
