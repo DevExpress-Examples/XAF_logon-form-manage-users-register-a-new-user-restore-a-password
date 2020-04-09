@@ -2,9 +2,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManageUsersOnLogon.Module", "ManageUsersOnLogon.Module\ManageUsersOnLogon.Module.csproj", "{7C3B1529-1376-4A30-ADDC-5620CCF77174}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManageUsersOnLogon.Web", "ManageUsersOnLogon.Web\ManageUsersOnLogon.Web.csproj", "{5FFF7254-F733-4DB5-9DF5-D299E8CB82A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManageUsersOnLogon.Module", "ManageUsersOnLogon.Module\ManageUsersOnLogon.Module.csproj", "{7C3B1529-1376-4A30-ADDC-5620CCF77174}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.Extensions", "Security.Extensions\Security.Extensions.csproj", "{CB48B408-E370-4C32-B5DC-684F48D6C0C5}"
 EndProject
