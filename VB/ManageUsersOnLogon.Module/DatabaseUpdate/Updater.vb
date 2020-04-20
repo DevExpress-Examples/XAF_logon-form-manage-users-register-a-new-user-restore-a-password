@@ -5,6 +5,10 @@ Imports DevExpress.ExpressApp.Updating
 Imports DevExpress.Persistent.Validation
 Imports DevExpress.ExpressApp.Security.Strategy
 Imports DevExpress.Persistent.Base.Security
+Imports DevExpress.Persistent.BaseImpl.PermissionPolicy
+Imports DevExpress.ExpressApp.Security
+Imports DevExpress.Persistent.BaseImpl
+Imports DevExpress.Persistent.Base
 
 Namespace ManageUsersOnLogon.Module.DatabaseUpdate
     Public Class Updater
@@ -15,24 +19,24 @@ Namespace ManageUsersOnLogon.Module.DatabaseUpdate
         End Sub
         Public Overrides Sub UpdateDatabaseAfterUpdateSchema()
             MyBase.UpdateDatabaseAfterUpdateSchema()
-'            #Region "Create Users for the Complex Security Strategy"
+            '            #Region "Create Users for the Complex Security Strategy"
             CreateUser(ObjectSpace, "Sam", "sam@example.com", String.Empty, True)
             CreateUser(ObjectSpace, "John", "john@example.com", String.Empty, False)
             ObjectSpace.CommitChanges()
-'            #End Region
+            '            #End Region
         End Sub
         Public Shared Function CreateUser(ByVal os As IObjectSpace, ByVal userName As String, ByVal email As String, ByVal password As String, ByVal isAdministrator As Boolean) As IAuthenticationStandardUser
             If String.IsNullOrEmpty(userName) OrElse String.IsNullOrEmpty(email) Then
                 Throw New ArgumentException("UserName and Email address are not specified!")
             End If
-            Dim user As SecuritySystemUser = os.FindObject(Of SecuritySystemUser)(New BinaryOperator("UserName", userName))
+            Dim user As PermissionPolicyUser = os.FindObject(Of PermissionPolicyUser)(New BinaryOperator("UserName", userName))
             If user Is Nothing Then
-                user = os.CreateObject(Of SecuritySystemUser)()
+                user = os.CreateObject(Of PermissionPolicyUser)()
                 user.UserName = userName
                 user.IsActive = True
                 user.SetMemberValue("Email", email)
                 user.SetPassword(password)
-                Dim role As SecuritySystemRole = If(isAdministrator, GetAdministratorRole(os), GetDefaultRole(os))
+                Dim role As PermissionPolicyRole = If(isAdministrator, GetAdministratorRole(os), GetDefaultRole(os))
                 user.Roles.Add(role)
                 user.Save()
                 If Validator.RuleSet.ValidateTarget(os, user, DefaultContexts.Save).State = ValidationState.Valid Then
@@ -41,51 +45,33 @@ Namespace ManageUsersOnLogon.Module.DatabaseUpdate
             End If
             Return user
         End Function
-        Public Shared Function GetAdministratorRole(ByVal os As IObjectSpace) As SecuritySystemRole
-            Dim administratorRole As SecuritySystemRole = os.FindObject(Of SecuritySystemRole)(New BinaryOperator("Name", "Administrator"))
+        Public Shared Function GetAdministratorRole(ByVal os As IObjectSpace) As PermissionPolicyRole
+            Dim administratorRole As PermissionPolicyRole = os.FindObject(Of PermissionPolicyRole)(New BinaryOperator("Name", "Administrator"))
             If administratorRole Is Nothing Then
-                administratorRole = os.CreateObject(Of SecuritySystemRole)()
+                administratorRole = os.CreateObject(Of PermissionPolicyRole)()
                 administratorRole.Name = "Administrator"
                 administratorRole.IsAdministrative = True
             End If
             Return administratorRole
         End Function
-        Public Shared Function GetDefaultRole(ByVal os As IObjectSpace) As SecuritySystemRole
-            Dim defaultRole As SecuritySystemRole = os.FindObject(Of SecuritySystemRole)(New BinaryOperator("Name", "Default"))
+
+        Private Shared Function GetDefaultRole(ByVal ObjectSpace As IObjectSpace) As PermissionPolicyRole
+            Dim defaultRole As PermissionPolicyRole = ObjectSpace.FindObject(Of PermissionPolicyRole)(New BinaryOperator("Name", "Default"))
             If defaultRole Is Nothing Then
-                defaultRole = os.CreateObject(Of SecuritySystemRole)()
+                defaultRole = ObjectSpace.CreateObject(Of PermissionPolicyRole)()
                 defaultRole.Name = "Default"
-
-                Dim securityDemoUserPermissions As SecuritySystemTypePermissionObject = os.CreateObject(Of SecuritySystemTypePermissionObject)()
-                securityDemoUserPermissions.TargetType = GetType(SecuritySystemUser)
-                defaultRole.TypePermissions.Add(securityDemoUserPermissions)
-
-                Dim myDetailsPermission As SecuritySystemObjectPermissionsObject = os.CreateObject(Of SecuritySystemObjectPermissionsObject)()
-                myDetailsPermission.Criteria = "[Oid] = CurrentUserId()"
-                myDetailsPermission.AllowNavigate = True
-                myDetailsPermission.AllowRead = True
-                securityDemoUserPermissions.ObjectPermissions.Add(myDetailsPermission)
-
-                Dim userPermissions As SecuritySystemTypePermissionObject = os.CreateObject(Of SecuritySystemTypePermissionObject)()
-                userPermissions.TargetType = GetType(SecuritySystemUser)
-                defaultRole.TypePermissions.Add(userPermissions)
-
-                Dim ownPasswordPermission As SecuritySystemMemberPermissionsObject = os.CreateObject(Of SecuritySystemMemberPermissionsObject)()
-                ownPasswordPermission.Members = "ChangePasswordOnFirstLogon; StoredPassword"
-                ownPasswordPermission.AllowWrite = True
-                userPermissions.MemberPermissions.Add(ownPasswordPermission)
-
-                Dim securityRolePermissions As SecuritySystemTypePermissionObject = os.CreateObject(Of SecuritySystemTypePermissionObject)()
-                securityRolePermissions.TargetType = GetType(SecuritySystemRole)
-                defaultRole.TypePermissions.Add(userPermissions)
-
-                Dim defaultRolePermission As SecuritySystemObjectPermissionsObject = os.CreateObject(Of SecuritySystemObjectPermissionsObject)()
-                defaultRolePermission.Criteria = "[Name] = 'Default'"
-                defaultRolePermission.AllowNavigate = True
-                defaultRolePermission.AllowRead = True
-                securityRolePermissions.ObjectPermissions.Add(defaultRolePermission)
+                defaultRole.AddObjectPermission(Of PermissionPolicyUser)(SecurityOperations.Read, "[Oid] = CurrentUserId()", SecurityPermissionState.Allow)
+                defaultRole.AddNavigationPermission("Application/NavigationItems/Items/Default/Items/MyDetails", SecurityPermissionState.Allow)
+                defaultRole.AddMemberPermission(Of PermissionPolicyUser)(SecurityOperations.Write, "ChangePasswordOnFirstLogon", "[Oid] = CurrentUserId()", SecurityPermissionState.Allow)
+                defaultRole.AddMemberPermission(Of PermissionPolicyUser)(SecurityOperations.Write, "StoredPassword", "[Oid] = CurrentUserId()", SecurityPermissionState.Allow)
+                defaultRole.AddTypePermissionsRecursively(Of PermissionPolicyRole)(SecurityOperations.Read, SecurityPermissionState.Deny)
+                defaultRole.AddTypePermissionsRecursively(Of ModelDifference)(SecurityOperations.ReadWriteAccess, SecurityPermissionState.Allow)
+                defaultRole.AddTypePermissionsRecursively(Of ModelDifferenceAspect)(SecurityOperations.ReadWriteAccess, SecurityPermissionState.Allow)
+                defaultRole.AddTypePermissionsRecursively(Of ModelDifference)(SecurityOperations.Create, SecurityPermissionState.Allow)
+                defaultRole.AddTypePermissionsRecursively(Of ModelDifferenceAspect)(SecurityOperations.Create, SecurityPermissionState.Allow)
             End If
             Return defaultRole
         End Function
+
     End Class
 End Namespace
