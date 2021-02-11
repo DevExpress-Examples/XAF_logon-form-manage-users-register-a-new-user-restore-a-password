@@ -18,8 +18,9 @@ This example contains a reusable `Security.Extensions` module that provides a po
  - <a href="https://www.devexpress.com/Support/Center/p/S32938">Security - provide the capability to register a new user from the logon form</a>
  - <a href="https://www.devexpress.com/Support/Center/p/S33481">Security.Authentication - provide a "Forgot Password" feature</a>
 
-<img src="https://raw.githubusercontent.com/DevExpress-Examples/obsolete-how-to-manage-users-register-a-new-user-restore-a-password-etc-from-the-logon-form-e4037/16.2.3+/media/08b47836-b8ac-11e6-80bf-00155d62480c.png">
+![](https://raw.githubusercontent.com/DevExpress-Examples/obsolete-how-to-manage-users-register-a-new-user-restore-a-password-etc-from-the-logon-form-e4037/16.2.3+/media/08b47836-b8ac-11e6-80bf-00155d62480c.png)
 
+---------------------------------
 
 ## Implementation Steps
 
