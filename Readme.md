@@ -5,6 +5,7 @@
 * [LogonActionParameters.cs](./CS/Security.Extensions/LogonActionParameters.cs) (VB: [LogonActionParameters.vb](./VB/Security.Extensions/LogonActionParameters.vb))
 * [ManageUsersOnLogonController.cs](./CS/Security.Extensions/ManageUsersOnLogonController.cs) (VB: [ManageUsersOnLogonController.vb](./VB/Security.Extensions/ManageUsersOnLogonController.vb))
 * [Module.cs](./CS/Security.Extensions/Module.cs) (VB: [Module.vb](./VB/Security.Extensions/Module.vb))
+* [WebApplication.cs](./CS/ManageUsersOnLogon.Web/WebApplication.cs) (VB: [WebApplication.vb](./VB/ManageUsersOnLogon.Web/WebApplication.vb))
 <!-- default file list end -->
 
 # How to manage users (register a new user, restore a password, etc.) from the logon form in ASP.NET
@@ -37,6 +38,14 @@ where 'Updater.CreateUser' is your custom method that matches the following defi
 ```cs
 public delegate IAuthenticationStandardUser CreateSecuritySystemUser(IObjectSpace objectSpace, string userName, string email, string password, bool isAdministrator);
 
+```
+4. In the YourSolutionName.Web/WebApplication file, add the following code into the WebApplication constructor to customize the [SecurityStrategyComplex.AnonymousAllowedTypes](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.Security.SecurityStrategy.AnonymousAllowedTypes) property:
+```cs
+        public ManageUsersOnLogonAspNetApplication() {
+            InitializeComponent();
+            ((SecurityStrategy)Security).AnonymousAllowedTypes.Add(typeof(PermissionPolicyUser));
+            ((SecurityStrategy)Security).AnonymousAllowedTypes.Add(typeof(PermissionPolicyRole));
+        }
 ```
 
 >This module is for ASP.NET only.
