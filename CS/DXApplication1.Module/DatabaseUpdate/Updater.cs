@@ -21,72 +21,40 @@ namespace DXApplication1.Module.DatabaseUpdate {
         public Updater(IObjectSpace objectSpace, Version currentDBVersion) :
             base(objectSpace, currentDBVersion) {
         }
-        public static IAuthenticationStandardUser CreateUser(IObjectSpace os, string userName, string email, string password, bool isAdministrator) {
+        public static IAuthenticationStandardUser CreateUser(IObjectSpace objectSpace, string userName, string email, string password, bool isAdministrator) {
             if(string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(email)) {
                 throw new ArgumentException("UserName and Email address are not specified!");
             }
-            ApplicationUser user = os.FindObject<ApplicationUser>(new BinaryOperator("UserName", userName));
+            ApplicationUser user = objectSpace.FindObject<ApplicationUser>(new BinaryOperator("UserName", userName));
             if(user == null) {
-                user = os.CreateObject<ApplicationUser>();
+                user = objectSpace.CreateObject<ApplicationUser>();
                 user.UserName = userName;
                 user.IsActive = true;
                 user.SetMemberValue("Email", email);
                 user.SetPassword(password);
-                PermissionPolicyRole role = isAdministrator ? GetAdministratorRole(os) : CreateDefaultRole(os);
+                PermissionPolicyRole role = isAdministrator ? GetAdministratorRole(objectSpace) : GetDefaultRole(objectSpace);
                 user.Roles.Add(role);
                 user.Save();
-                if(Validator.RuleSet.ValidateTarget(os, user, DefaultContexts.Save).State == ValidationState.Valid) {
-                    os.CommitChanges();
+                if(Validator.RuleSet.ValidateTarget(objectSpace, user, DefaultContexts.Save).State == ValidationState.Valid) {
+                    // The UserLoginInfo object requires a user object Id (Oid).
+                    // Commit the user object to the database before you create a UserLoginInfo object. This will correctly initialize the user key property.
+                    objectSpace.CommitChanges();
+                    ((ISecurityUserWithLoginInfo)user).CreateUserLoginInfo(SecurityDefaults.PasswordAuthentication, objectSpace.GetKeyValueAsString(user));
+                    objectSpace.CommitChanges();
                 }
-                ((ISecurityUserWithLoginInfo)user).CreateUserLoginInfo(SecurityDefaults.PasswordAuthentication, os.GetKeyValueAsString(user));
-                os.CommitChanges();
             }
             return user;
         }
         public override void UpdateDatabaseAfterUpdateSchema() {
             base.UpdateDatabaseAfterUpdateSchema();
-            //string name = "MyName";
-            //DomainObject1 theObject = ObjectSpace.FirstOrDefault<DomainObject1>(u => u.Name == name);
-            //if(theObject == null) {
-            //    theObject = ObjectSpace.CreateObject<DomainObject1>();
-            //    theObject.Name = name;
-            //}
             ApplicationUser sampleUser = ObjectSpace.FirstOrDefault<ApplicationUser>(u => u.UserName == "User");
             if(sampleUser == null) {
-                sampleUser = ObjectSpace.CreateObject<ApplicationUser>();
-                sampleUser.UserName = "User";
-                // Set a password if the standard authentication type is used
-                sampleUser.SetPassword("");
-
-                // The UserLoginInfo object requires a user object Id (Oid).
-                // Commit the user object to the database before you create a UserLoginInfo object. This will correctly initialize the user key property.
-                ObjectSpace.CommitChanges(); //This line persists created object(s).
-                ((ISecurityUserWithLoginInfo)sampleUser).CreateUserLoginInfo(SecurityDefaults.PasswordAuthentication, ObjectSpace.GetKeyValueAsString(sampleUser));
+                CreateUser(ObjectSpace, "User", "test@mail.com", "", false);
             }
-            PermissionPolicyRole defaultRole = CreateDefaultRole(ObjectSpace);
-            sampleUser.Roles.Add(defaultRole);
-
             ApplicationUser userAdmin = ObjectSpace.FirstOrDefault<ApplicationUser>(u => u.UserName == "Admin");
             if(userAdmin == null) {
-                userAdmin = ObjectSpace.CreateObject<ApplicationUser>();
-                userAdmin.UserName = "Admin";
-                // Set a password if the standard authentication type is used
-                userAdmin.SetPassword("");
-
-                // The UserLoginInfo object requires a user object Id (Oid).
-                // Commit the user object to the database before you create a UserLoginInfo object. This will correctly initialize the user key property.
-                ObjectSpace.CommitChanges(); //This line persists created object(s).
-                ((ISecurityUserWithLoginInfo)userAdmin).CreateUserLoginInfo(SecurityDefaults.PasswordAuthentication, ObjectSpace.GetKeyValueAsString(userAdmin));
+                CreateUser(ObjectSpace, "Admin", "admin@mail.com", "", true);
             }
-            // If a role with the Administrators name doesn't exist in the database, create this role
-            PermissionPolicyRole adminRole = GetAdministratorRole(ObjectSpace);//.FirstOrDefault<PermissionPolicyRole>(r => r.Name == "Administrators");
-                                                                               //if(adminRole == null) {
-                                                                               //    adminRole = ObjectSpace.CreateObject<PermissionPolicyRole>();
-                                                                               //    adminRole.Name = "Administrators";
-                                                                               //}
-                                                                               //adminRole.IsAdministrative = true;
-            userAdmin.Roles.Add(adminRole);
-            ObjectSpace.CommitChanges(); //This line persists created object(s).
         }
         static PermissionPolicyRole GetAdministratorRole(IObjectSpace os) {
             PermissionPolicyRole adminRole = os.FirstOrDefault<PermissionPolicyRole>(r => r.Name == "Administrators");
@@ -103,7 +71,7 @@ namespace DXApplication1.Module.DatabaseUpdate {
             //    RenameColumn("DomainObject1Table", "OldColumnName", "NewColumnName");
             //}
         }
-        static PermissionPolicyRole CreateDefaultRole(IObjectSpace os) {
+        static PermissionPolicyRole GetDefaultRole(IObjectSpace os) {
             PermissionPolicyRole defaultRole = os.FirstOrDefault<PermissionPolicyRole>(role => role.Name == "Default");
             if(defaultRole == null) {
                 defaultRole = os.CreateObject<PermissionPolicyRole>();
