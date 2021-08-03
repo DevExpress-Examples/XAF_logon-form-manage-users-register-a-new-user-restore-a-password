@@ -60,18 +60,25 @@ namespace Security.Extensions {
         }
         //Dennis: Configures a View used to display our parameters objects. 
         protected virtual void CreateParametersViewCore(SimpleActionExecuteEventArgs e) {
+            //Application.Modules.FindModule<ValidationModule>().InitializeRuleSet();//T461096, T390268
+            //Type parametersType = e.Action.Tag as Type;
+            //Guard.ArgumentNotNull(parametersType, "parametersType");
+            //object logonActionParameters = Activator.CreateInstance(parametersType);
+            //DetailView dv = Application.CreateDetailView(ObjectSpaceInMemory.CreateNew(), logonActionParameters);
+            //dv.ViewEditMode = ViewEditMode.Edit;
+            //e.ShowViewParameters.CreatedView = dv;
+            //e.ShowViewParameters.Context = TemplateContext.View;
+            ////WinForms:
+            ////e.ShowViewParameters.TargetWindow = TargetWindow.NewModalWindow;
+            ////ASP.NET:
+            //e.ShowViewParameters.TargetWindow = TargetWindow.Current;
             Application.Modules.FindModule<ValidationModule>().InitializeRuleSet();//T461096, T390268
             Type parametersType = e.Action.Tag as Type;
             Guard.ArgumentNotNull(parametersType, "parametersType");
             object logonActionParameters = Activator.CreateInstance(parametersType);
             DetailView dv = Application.CreateDetailView(ObjectSpaceInMemory.CreateNew(), logonActionParameters);
             dv.ViewEditMode = ViewEditMode.Edit;
-            e.ShowViewParameters.CreatedView = dv;
-            e.ShowViewParameters.Context = TemplateContext.View;
-            //WinForms:
-            //e.ShowViewParameters.TargetWindow = TargetWindow.NewModalWindow;
-            //ASP.NET:
-            e.ShowViewParameters.TargetWindow = TargetWindow.Current;
+            Frame.SetView(dv);
         }
         protected virtual void AcceptParameters(LogonActionParametersBase parameters) {
             Guard.ArgumentNotNull(parameters, "parameters");

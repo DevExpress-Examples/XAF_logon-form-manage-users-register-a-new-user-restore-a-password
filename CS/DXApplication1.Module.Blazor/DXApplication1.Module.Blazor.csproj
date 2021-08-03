@@ -1,6 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <DxExtendStartupHost>False</DxExtendStartupHost>
     <Deterministic>false</Deterministic>
     <AssemblyVersion>1.0.*</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
@@ -13,11 +14,16 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="DevExpress.ExpressApp" Version="21.1.4" />
-    <PackageReference Include="DevExpress.ExpressApp.ConditionalAppearance" Version="21.1.4" />
+    <PackageReference Include="DevExpress.ExpressApp.Blazor" Version="21.1.4" />
     <PackageReference Include="DevExpress.ExpressApp.Security.Xpo" Version="21.1.4" />
-    <PackageReference Include="DevExpress.ExpressApp.Validation" Version="21.1.4" />
+    <PackageReference Include="DevExpress.ExpressApp.Validation.Blazor" Version="21.1.4" />
     <PackageReference Include="DevExpress.ExpressApp.Xpo" Version="21.1.4" />
     <PackageReference Include="DevExpress.Persistent.Base" Version="21.1.4" />
     <PackageReference Include="DevExpress.Persistent.BaseImpl" Version="21.1.4" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DXApplication1.Module\DXApplication1.Module.csproj">
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
 </Project>
