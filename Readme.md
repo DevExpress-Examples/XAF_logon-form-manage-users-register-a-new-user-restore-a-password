@@ -8,7 +8,7 @@
 * [WebApplication.cs](./CS/ManageUsersOnLogon.Web/WebApplication.cs) (VB: [WebApplication.vb](./VB/ManageUsersOnLogon.Web/WebApplication.vb))
 <!-- default file list end -->
 
-# How to manage users (register a new user, restore a password, etc.) from the logon form in ASP.NET
+# How to manage users (register a new user, restore a password, etc.) from the logon form in XAF Blazor UI:
 
 > There is an alternative solution: <a href="https://www.devexpress.com/Support/Center/p/T535280">How to: Use Google, Facebook and Microsoft accounts in ASP.NET XAF applications (OAuth2 authentication demo)</a>. Instead of creating and maintaining a quite complex custom-tailored implementation for managing user authentication and registration from the logon form, we recommend delegating these routine tasks to OAuth2 providers. For instance, Microsoft or Google provide Microsoft 365 and GSuite services for managing users (e.g., register and delete users, reset forgotten passwords), documents, apps and other things within an organization using standard and familiar for business people means. Your XAF application will just smoothly integrate these OAuth2 providers into the logon form after adding some boilerplate code.
     
@@ -19,7 +19,8 @@ This example contains a reusable `Security.Extensions` module that provides a po
  - <a href="https://www.devexpress.com/Support/Center/p/S32938">Security - provide the capability to register a new user from the logon form</a>
  - <a href="https://www.devexpress.com/Support/Center/p/S33481">Security.Authentication - provide a "Forgot Password" feature</a>
 
-![](https://raw.githubusercontent.com/DevExpress-Examples/obsolete-how-to-manage-users-register-a-new-user-restore-a-password-etc-from-the-logon-form-e4037/16.2.3+/media/08b47836-b8ac-11e6-80bf-00155d62480c.png)
+![image](https://user-images.githubusercontent.com/14300209/128016215-31fc417a-cfb9-4ce4-910a-e1e215c1c63d.png)
+
 
 ---------------------------------
 
@@ -39,13 +40,24 @@ where 'Updater.CreateUser' is your custom method that matches the following defi
 public delegate IAuthenticationStandardUser CreateSecuritySystemUser(IObjectSpace objectSpace, string userName, string email, string password, bool isAdministrator);
 
 ```
-4. In the YourSolutionName.Web/WebApplication file, add the following code into the WebApplication constructor to customize the [SecurityStrategyComplex.AnonymousAllowedTypes](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.Security.SecurityStrategy.AnonymousAllowedTypes) property:
+4. In the YourSolutionName.Blazor.Server/Startup.cs file, add the following code into the ConfigureServices method to customize the [SecurityStrategyComplex.AnonymousAllowedTypes](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.Security.SecurityStrategy.AnonymousAllowedTypes) property:
 ```cs
-        public ManageUsersOnLogonAspNetApplication() {
-            InitializeComponent();
-            ((SecurityStrategy)Security).AnonymousAllowedTypes.Add(typeof(PermissionPolicyUser));
-            ((SecurityStrategy)Security).AnonymousAllowedTypes.Add(typeof(PermissionPolicyRole));
-        }
+            services.AddXafSecurity(options => {
+                options.RoleType = typeof(PermissionPolicyRole);
+                // ApplicationUser descends from PermissionPolicyUser and supports OAuth authentication. For more information, refer to the following help topic: https://docs.devexpress.com/eXpressAppFramework/402197
+                // If your application uses PermissionPolicyUser or a custom user type, set the UserType property as follows:
+                options.UserType = typeof(DXApplication1.Module.BusinessObjects.ApplicationUser);
+                
+                // ApplicationUserLoginInfo is only necessary for applications that use the ApplicationUser user type.
+                // Comment out the following line if using PermissionPolicyUser or a custom user type.
+                options.UserLoginInfoType = typeof(DXApplication1.Module.BusinessObjects.ApplicationUserLoginInfo);
+                options.Events.OnSecurityStrategyCreated = securityStrategy => {
+                    ((SecurityStrategy)securityStrategy).RegisterXPOAdapterProviders();
+                    ((SecurityStrategy)securityStrategy).AnonymousAllowedTypes.Add(typeof(ApplicationUser));
+                    ((SecurityStrategy)securityStrategy).AnonymousAllowedTypes.Add(typeof(PermissionPolicyRole));
+                    ((SecurityStrategy)securityStrategy).AnonymousAllowedTypes.Add(typeof(ApplicationUserLoginInfo));
+
+                };
 ```
 
->This module is for ASP.NET only.
+
