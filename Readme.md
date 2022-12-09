@@ -64,8 +64,8 @@ In order to use this module in your project, do the following:
    
 ## Files to Review
 
-* [Updater.cs](./CS/DXApplication1.Module/DatabaseUpdate/Updater.cs)
-* [LogonActionParameters.cs](./CS/Security.Extensions/LogonActionParameters.cs)
-* [ManageUsersOnLogonController.cs](./CS/Security.Extensions/ManageUsersOnLogonController.cs) 
-* [Module.cs](./CS/Security.Extensions/Module.cs)
-* [Startup.cs](./CS/DXApplication1.Blazor.Server/Startup.cs)
+* [Updater.cs](./EFCore/CS/DXApplication1.Module/DatabaseUpdate/Updater.cs)
+* [LogonActionParameters.cs](./EFCore/CS/Security.Extensions/LogonActionParameters.cs)
+* [ManageUsersOnLogonController.cs](./EFCore/CS/Security.Extensions/ManageUsersOnLogonController.cs) 
+* [Module.cs](./EFCore/CS/Security.Extensions/Module.cs)
+* [Startup.cs](./EFCore/CS/DXApplication1.Blazor.Server/Startup.cs)
