@@ -7,6 +7,9 @@
 
 # How to manage users (register a new user, restore a password, etc.) from the logon form in XAF Blazor UI
 
+> **Note**  
+> The description of this example is currently under construction and may not match the code in the example. We are currently working to provide you with up-to-date content.
+
 > **Note**:
 > There is an alternative solution: 
 >
