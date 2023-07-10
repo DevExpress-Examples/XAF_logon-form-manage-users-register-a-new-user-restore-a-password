@@ -37,7 +37,7 @@ In order to use this module in your own project, follow the steps below:
 
 1. Download and include the `Security.Extensions` module project into your XAF solution and rebuild it. See [How to Add an Existing Project](https://learn.microsoft.com/en-us/previous-versions/ff460187(v=vs.140)?redirectedfrom=MSDN) in MSDN.
 
-2. Invoke the Module Designer for your platform-agnostic module and drag and drop the **SecurityExtensionsModule** from the Toolbox.
+2. Add the `Security.Extensions.SecurityExtensionsModule` module to your application using any solution from the following help topic: [Ways to Register a Module](https://docs.devexpress.com/eXpressAppFramework/118047/application-shell-and-base-infrastructure/application-solution-components/ways-to-register-a-module).
 
 3. Add the following code into your platform-agnostic module class:
 
@@ -51,25 +51,7 @@ In order to use this module in your own project, follow the steps below:
    public delegate IAuthenticationStandardUser CreateSecuritySystemUser(IObjectSpace objectSpace, string userName, string email, string password, bool isAdministrator);
    ```
    
-4. Edit **Startup.cs** in the **SolutionName.Blazor.Server** project. Add the following code into the **ConfigureServices()** method to customize the [SecurityStrategyComplex.AnonymousAllowedTypes](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.Security.SecurityStrategy.AnonymousAllowedTypes) property. Note the **RegisterXPOAdapterProviders()** method call that you would only need in applications that use XPO.
-
-   ```cs
-   services.AddXafSecurity(options => {
-       options.RoleType = typeof(PermissionPolicyRole);
-       // ApplicationUser descends from PermissionPolicyUser and supports OAuth authentication. For more information, refer to the following help topic: https://docs.devexpress.com/eXpressAppFramework/402197
-       // If your application uses PermissionPolicyUser or a custom user type, set the UserType property as follows:
-       options.UserType = typeof(DXApplication1.Module.BusinessObjects.ApplicationUser);
-
-       // ApplicationUserLoginInfo is only necessary for applications that use the ApplicationUser user type.
-       // Comment out the following line if using PermissionPolicyUser or a custom user type.
-       options.UserLoginInfoType = typeof(DXApplication1.Module.BusinessObjects.ApplicationUserLoginInfo);
-       options.Events.OnSecurityStrategyCreated = securityStrategy => {
-           ((SecurityStrategy)securityStrategy).RegisterXPOAdapterProviders(); // Only required for XPO
-           ((SecurityStrategy)securityStrategy).AnonymousAllowedTypes.Add(typeof(ApplicationUser));
-           ((SecurityStrategy)securityStrategy).AnonymousAllowedTypes.Add(typeof(PermissionPolicyRole));
-           ((SecurityStrategy)securityStrategy).AnonymousAllowedTypes.Add(typeof(ApplicationUserLoginInfo));
-   };
-   ```
+4. Add the following types to the `SecurityStrategy.AnonymousAllowedTypes` collection: `ApplicationUser`, `PermissionPolicyRole`, `ApplicationUserLoginInfo`. Use the `SecurityOptions.Events.OnSecurityStrategyCreated` delegate to access this collection: [SecurityStrategyComplex.AnonymousAllowedTypes Property](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.Security.SecurityStrategy.AnonymousAllowedTypes).
    
 ## Files to Review
 
