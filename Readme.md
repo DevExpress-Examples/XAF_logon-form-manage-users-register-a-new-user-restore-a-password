@@ -34,7 +34,7 @@ The module includes the following notable building blocks:
 
 In order to use this module in your own project, follow the steps below: 
 
-1. Download the `Security.Extensions` module project, include it into your XAF solution and rebuild the solution. See [How to Add an Existing Project](https://learn.microsoft.com/en-us/previous-versions/ff460187(v=vs.140)?redirectedfrom=MSDN) in MSDN.
+1. Download the `Security.Extensions` module project, include it in your XAF solution, and rebuild the solution. See [How to Add an Existing Project](https://learn.microsoft.com/en-us/previous-versions/ff460187(v=vs.140)?redirectedfrom=MSDN) in MSDN for details.
 
 2. Add the `Security.Extensions.SecurityExtensionsModule` to your application. To do this, use any of the techniques described in the following help topic: [Ways to Register a Module](https://docs.devexpress.com/eXpressAppFramework/118047/application-shell-and-base-infrastructure/application-solution-components/ways-to-register-a-module).
 
