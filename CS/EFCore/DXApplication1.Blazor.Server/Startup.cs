@@ -61,6 +61,7 @@ namespace DXApplication1.Blazor.Server {
                         options.UseSqlServer(connectionString);
                         options.UseChangeTrackingProxies();
                         options.UseObjectSpaceLinkProxies();
+                        options.UseXafServiceProviderContainer(serviceProvider);
                         options.UseLazyLoadingProxies();
                     })
                     .AddNonPersistent();

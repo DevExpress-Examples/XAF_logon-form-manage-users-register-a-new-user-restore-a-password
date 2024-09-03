@@ -1,6 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Deterministic>false</Deterministic>
     <AssemblyVersion>1.0.*</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
@@ -12,20 +13,19 @@
     <EmbeddedResource Include="Model.DesignedDiffs.xafml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="DevExpress.ExpressApp" Version="22.2.2-beta" />
-    <PackageReference Include="DevExpress.ExpressApp.ConditionalAppearance" Version="22.2.2-beta" />
-    <PackageReference Include="DevExpress.ExpressApp.Validation" Version="22.2.2-beta" />
-	<PackageReference Include="DevExpress.ExpressApp.Security" Version="22.2.2-beta" />
-    <PackageReference Include="DevExpress.ExpressApp.EFCore" Version="22.2.2-beta" />
-    <PackageReference Include="DevExpress.Persistent.Base" Version="22.2.2-beta" />
-    <PackageReference Include="DevExpress.Persistent.BaseImpl.EFCore" Version="22.2.2-beta" />
-	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.3" />
+    <PackageReference Include="DevExpress.ExpressApp" Version="24.2.1-alpha-24207" />
+    <PackageReference Include="DevExpress.ExpressApp.ConditionalAppearance" Version="24.2.1-alpha-24207" />
+    <PackageReference Include="DevExpress.ExpressApp.Validation" Version="24.2.1-alpha-24207" />
+    <PackageReference Include="DevExpress.ExpressApp.Security" Version="24.2.1-alpha-24207" />
+    <PackageReference Include="DevExpress.ExpressApp.EFCore" Version="24.2.1-alpha-24207" />
+    <PackageReference Include="DevExpress.Persistent.Base" Version="24.2.1-alpha-24207" />
+    <PackageReference Include="DevExpress.Persistent.BaseImpl.EFCore" Version="24.2.1-alpha-24207" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Security.Extensions\Security.Extensions.csproj" />
   </ItemGroup>
-
   <ItemGroup>
-    <PackageReference Include="DevExpress.ExpressApp.CodeAnalysis" Version="22.2.2-beta" />
+    <PackageReference Include="DevExpress.ExpressApp.CodeAnalysis" Version="24.2.1-alpha-24207" />
   </ItemGroup>
 </Project>
