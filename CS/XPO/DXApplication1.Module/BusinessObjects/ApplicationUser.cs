@@ -1,35 +1,51 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Text;
 using DevExpress.ExpressApp;
 using DevExpress.ExpressApp.Security;
 using DevExpress.Persistent.BaseImpl.PermissionPolicy;
 using DevExpress.Xpo;
 
-namespace DXApplication1.Module.BusinessObjects {
-    [MapInheritance(MapInheritanceType.ParentTable)]
-    [DefaultProperty(nameof(UserName))]
-    public class ApplicationUser : PermissionPolicyUser, IObjectSpaceLink, ISecurityUserWithLoginInfo {
-        public ApplicationUser(Session session) : base(session) { }
+namespace DXApplication1.Module.BusinessObjects;
 
-        [Browsable(false)]
-        [Aggregated, Association("User-LoginInfo")]
-        public XPCollection<ApplicationUserLoginInfo> LoginInfo {
-            get { return GetCollection<ApplicationUserLoginInfo>(nameof(LoginInfo)); }
-        }
+[MapInheritance(MapInheritanceType.ParentTable)]
+[DefaultProperty(nameof(UserName))]
+public class ApplicationUser : PermissionPolicyUser, ISecurityUserWithLoginInfo, ISecurityUserLockout {
+    private string email;
+    private int accessFailedCount;
+    private DateTime lockoutEnd;
 
-        IEnumerable<ISecurityUserLoginInfo> IOAuthSecurityUser.UserLogins => LoginInfo.OfType<ISecurityUserLoginInfo>();
+    public ApplicationUser(Session session) : base(session) { }
 
-        IObjectSpace IObjectSpaceLink.ObjectSpace { get; set; }
+    public string Email {
+        get { return email; }
+        set { SetPropertyValue(nameof(Email), ref email, value); }
+    }
 
-        ISecurityUserLoginInfo ISecurityUserWithLoginInfo.CreateUserLoginInfo(string loginProviderName, string providerUserKey) {
-            ApplicationUserLoginInfo result = ((IObjectSpaceLink)this).ObjectSpace.CreateObject<ApplicationUserLoginInfo>();
-            result.LoginProviderName = loginProviderName;
-            result.ProviderUserKey = providerUserKey;
-            result.User = this;
-            return result;
-        }
+    [Browsable(false)]
+    public int AccessFailedCount {
+        get { return accessFailedCount; }
+        set { SetPropertyValue(nameof(AccessFailedCount), ref accessFailedCount, value); }
+    }
+
+    [Browsable(false)]
+    public DateTime LockoutEnd {
+        get { return lockoutEnd; }
+        set { SetPropertyValue(nameof(LockoutEnd), ref lockoutEnd, value); }
+    }
+
+    [Browsable(false)]
+    [Aggregated, Association("User-LoginInfo")]
+    public XPCollection<ApplicationUserLoginInfo> LoginInfo {
+        get { return GetCollection<ApplicationUserLoginInfo>(nameof(LoginInfo)); }
+    }
+
+    IEnumerable<ISecurityUserLoginInfo> IOAuthSecurityUser.UserLogins => LoginInfo.OfType<ISecurityUserLoginInfo>();
+
+    ISecurityUserLoginInfo ISecurityUserWithLoginInfo.CreateUserLoginInfo(string loginProviderName, string providerUserKey) {
+        ApplicationUserLoginInfo result = new ApplicationUserLoginInfo(Session);
+        result.LoginProviderName = loginProviderName;
+        result.ProviderUserKey = providerUserKey;
+        result.User = this;
+        return result;
     }
 }

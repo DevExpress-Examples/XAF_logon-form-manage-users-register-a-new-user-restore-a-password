@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application>
+  <ActionDesign>
+    <Actions>
+      <Action Id="AcceptLogonParameters" ValidationContexts="CustomLogonActionsContext" />
+    </Actions>
+  </ActionDesign>
+  <Views>
+    <DetailView Id="SetNewPasswordParameters_DetailView" CaptionLocation="Top" />
+  </Views>
+</Application>

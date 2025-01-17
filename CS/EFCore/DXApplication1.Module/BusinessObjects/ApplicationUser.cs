@@ -1,28 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using DevExpress.ExpressApp;
 using DevExpress.ExpressApp.Security;
 using DevExpress.Persistent.BaseImpl.EF.PermissionPolicy;
 
-namespace DXApplication1.Module.BusinessObjects {
-    [DefaultProperty(nameof(UserName))]
-    public class ApplicationUser : PermissionPolicyUser, ISecurityUserWithLoginInfo {
-        public virtual string Email { get; set; }
+namespace DXApplication1.Module.BusinessObjects;
 
-        [Browsable(false)]
-        public virtual ICollection<ApplicationUserLoginInfo> LoginInfo { get; set; } = new ObservableCollection<ApplicationUserLoginInfo>();
+[DefaultProperty(nameof(UserName))]
+public class ApplicationUser : PermissionPolicyUser, ISecurityUserWithLoginInfo, ISecurityUserLockout {
+    public virtual string Email { get; set; }
 
-        IEnumerable<ISecurityUserLoginInfo> IOAuthSecurityUser.UserLogins => LoginInfo.OfType<ISecurityUserLoginInfo>();
+    [Browsable(false)]
+    public virtual int AccessFailedCount { get; set; }
 
-        ISecurityUserLoginInfo ISecurityUserWithLoginInfo.CreateUserLoginInfo(string loginProviderName, string providerUserKey) {
-            ApplicationUserLoginInfo result = ((IObjectSpaceLink)this).ObjectSpace.CreateObject<ApplicationUserLoginInfo>();
-            result.LoginProviderName = loginProviderName;
-            result.ProviderUserKey = providerUserKey;
-            result.User = this;
-            return result;
-        }
+    [Browsable(false)]
+    public virtual DateTime LockoutEnd { get; set; }
+
+    [Browsable(false)]
+    [DevExpress.ExpressApp.DC.Aggregated]
+    public virtual IList<ApplicationUserLoginInfo> UserLogins { get; set; } = new ObservableCollection<ApplicationUserLoginInfo>();
+
+    IEnumerable<ISecurityUserLoginInfo> IOAuthSecurityUser.UserLogins => UserLogins.OfType<ISecurityUserLoginInfo>();
+
+    ISecurityUserLoginInfo ISecurityUserWithLoginInfo.CreateUserLoginInfo(string loginProviderName, string providerUserKey) {
+        ApplicationUserLoginInfo result = ((IObjectSpaceLink)this).ObjectSpace.CreateObject<ApplicationUserLoginInfo>();
+        result.LoginProviderName = loginProviderName;
+        result.ProviderUserKey = providerUserKey;
+        result.User = this;
+        return result;
     }
 }
