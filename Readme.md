@@ -12,7 +12,7 @@
 >
 > [How to: Use Google, Facebook and Microsoft accounts in ASP.NET XAF applications (OAuth2 authentication demo)](https://github.com/DevExpress-Examples/xaf-web-forms-use-oauth2-authentication-providers). 
 >
-> Instead of a custom-tailored implementation, we recommend that you delegate these routine tasks to OAuth2 providers. Microsoft 365 or Google GSuite services enable user and document management that's familiar to anyone who works with business apps. Your XAF application can easily integrate these OAuth2 providers into the logon form. You only need to add some boilerplate code.
+> Instead of a custom-tailored implementation, we recommend that you delegate these routine tasks to OAuth2 providers. Microsoft 365 or Google GSuite services include user and document management familiar to business app users. Your XAF application can integrate these OAuth2 providers into the login form - you only need to add some boilerplate code.
     
 ## Implementation Details
 
@@ -26,7 +26,7 @@ This example contains a reusable `Security.Extensions` module that enables the f
 The module includes the following notable building blocks:
 
 - Non-persistent data models for parameter screens ([LogonActionParameters.cs](./CS/Security.Extensions/LogonActionParameters.cs)).
-- A View Controller ([ManageUsersOnLogonController.cs](./CS/Security.Extensions/Controllers/ManageUsersOnLogonController.cs)) for the logon Detail View. The controller declares custom Actions and their behavior. See the [XafApplication.CreateCustomLogonWindowControllers](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.XafApplication.CreateCustomLogonWindowControllers) event in [Module.cs](./CS/Security.Extensions/Module.cs) to find controller registration code and other service logic.
+- A View Controller ([ManageUsersOnLogonController.cs](./CS/Security.Extensions/Controllers/ManageUsersOnLogonController.cs)) for the login Detail View. The controller declares custom Actions and their behavior. See the [XafApplication.CreateCustomLogonWindowControllers](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.XafApplication.CreateCustomLogonWindowControllers) event in [Module.cs](./CS/Security.Extensions/Module.cs) to find controller registration code and other service logic.
 - Services for restoring password ([RestorePasswordService.cs](./CS/Security.Extensions/Services/RestorePasswordService.cs)) and registering new users ([UserRegistrationService.cs](./CS/Security.Extensions/Services/UserRegistrationService.cs)).
 - A custom logon view for restoring a user's password (see the `Application_CreateCustomLogonAction` event handler in [Module.cs](./CS/Security.Extensions/Module.cs)).
 
