@@ -68,17 +68,17 @@ In order to use this module in your own project, follow the steps below:
 EF Core:
 
 * [Updater.cs](./CS/EFCore/DXApplication1.Module/DatabaseUpdate/Updater.cs)
-* [LogonActionParameters.cs](./CS/EFCore/Security.Extensions/LogonActionParameters.cs)
-* [ManageUsersOnLogonController.cs](./CS/EFCore/Security.Extensions/ManageUsersOnLogonController.cs) 
-* [Module.cs](./CS/EFCore/Security.Extensions/Module.cs)
+* [LogonActionParameters.cs]
+* [ManageUsersOnLogonController.cs](
+* [Module.cs]
 * [Startup.cs](./CS/EFCore/DXApplication1.Blazor.Server/Startup.cs)
 
 XPO:
 
 * [Updater.cs](./CS/XPO/DXApplication1.Module/DatabaseUpdate/Updater.cs)
-* [LogonActionParameters.cs](./CS/XPO/Security.Extensions/LogonActionParameters.cs)
-* [ManageUsersOnLogonController.cs](./CS/XPO/Security.Extensions/ManageUsersOnLogonController.cs) 
-* [Module.cs](./CS/XPO/Security.Extensions/Module.cs)
+* [LogonActionParameters.cs]
+* [ManageUsersOnLogonController.cs]
+* [Module.cs]
 * [Startup.cs](./CS/XPO/DXApplication1.Blazor.Server/Startup.cs)
 <!-- feedback -->
 ## Does this example address your development requirements/objectives?
