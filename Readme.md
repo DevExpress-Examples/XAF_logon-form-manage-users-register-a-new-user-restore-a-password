@@ -5,10 +5,10 @@
 <!-- default badges end -->
 <!-- default file list -->
 
-# XAF Blazor UI: How to extend the logon form—register a new user, restore a password
+# XAF Blazor UI: How to extend the logon form: register a new user, restore a password
 
 > **Note**:
-> Instead of a custom implementation, we recommend that you delegate these routine tasks to OAuth2 providers. Microsoft, Google, Azure, and GitHub services enable user and document management that's familiar to anyone who works with business apps. Your XAF application can easily integrate these OAuth2 providers into the logon form. You only need to add some boilerplate code.
+> Instead of custom implementation, we recommend that you delegate these routine tasks to OAuth2 providers. Microsoft, Google, Azure, and GitHub services enable user and document management that's familiar to anyone who works with business apps. Your XAF application can easily integrate these OAuth2 providers into the logon form. You only need to add boilerplate code.
 > Refer to the following help topic for additional information: [Active Directory and OAuth2 Authentication Providers in ASP.NET Core Blazor Applications](https://docs.devexpress.com/eXpressAppFramework/402197/data-security-and-safety/security-system/authentication/oauth-and-custom-authentication/active-directory-and-oauth2-authentication-providers-in-blazor-applications).
 
     
@@ -20,7 +20,7 @@ The module includes the following notable building blocks:
 
 - Non-persistent data models for parameter screens ([LogonActionParameters.cs](./CS/Security.Extensions/LogonActionParameters.cs)).
 - A View Controller ([ManageUsersOnLogonController.cs](./CS/Security.Extensions/Controllers/ManageUsersOnLogonController.cs)) for the login Detail View. The controller declares custom Actions and their behavior. See the `CreateCustomLogonWindowControllers` event in [Module.cs](./CS/Security.Extensions/Module.cs#L26) to find controller registration code and other service logic.
-- Services for restoring password ([RestorePasswordService.cs](./CS/Security.Extensions/Services/RestorePasswordService.cs)) and registering new users ([UserRegistrationService.cs](./CS/Security.Extensions/Services/UserRegistrationService.cs)).
+- Services for restoring passwords ([RestorePasswordService.cs](./CS/Security.Extensions/Services/RestorePasswordService.cs)) and registering new users ([UserRegistrationService.cs](./CS/Security.Extensions/Services/UserRegistrationService.cs)).
 - A custom login view for restoring a user's password (see the `Application_CreateCustomLogonAction` event handler in [Module.cs](./CS/Security.Extensions/Module.cs#L32)).
 
 ### Implementation Details
