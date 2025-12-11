@@ -1,5 +1,7 @@
 ﻿using DevExpress.Blazor;
 using DevExpress.ExpressApp;
+using DevExpress.ExpressApp.Blazor.Components.Models;
+using DevExpress.ExpressApp.Blazor.Templates.ActionControls;
 using DevExpress.ExpressApp.Blazor.Templates.Toolbar.ActionControls;
 using DevExpress.ExpressApp.SystemModule;
 
@@ -10,8 +12,8 @@ public class LogonActionCustomizationController : WindowController {
     private ActionControlsSiteController actionControlsSiteController;
 
     private void ActionControlsSiteController_CustomizeActionControl(object sender, ActionControlEventArgs e) {
-        if (e.ActionControl.ActionId is "AcceptLogonParameters" && e.ActionControl is DxToolbarItemActionControlBase toolbarItemAction) {
-            toolbarItemAction.ToolbarItemModel.RenderStyle = ButtonRenderStyle.Primary;
+        if (e.ActionControl.ActionId is "AcceptLogonParameters" && e.ActionControl is DxActionItemActionControlBase<DxToolbarItemModel> toolbarItemAction) {
+            toolbarItemAction.Model.RenderStyle = ButtonRenderStyle.Primary;
         }
     }
 
