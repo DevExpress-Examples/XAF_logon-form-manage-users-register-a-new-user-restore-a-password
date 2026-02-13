@@ -92,7 +92,7 @@ Perform the following steps to integrate this module in your project:
 * [XAF - Customize Logon Parameters](https://github.com/DevExpress-Examples/xaf-custom-logon-parameters)
 
 <!-- feedback -->
-## Does this example address your development requirements/objectives?
+## Does This Example Address Your Development Requirements/Objectives?
 
 [<img src="https://www.devexpress.com/support/examples/i/yes-button.svg"/>](https://www.devexpress.com/support/examples/survey.xml?utm_source=github&utm_campaign=XAF_logon-form-manage-users-register-a-new-user-restore-a-password&~~~was_helpful=yes) [<img src="https://www.devexpress.com/support/examples/i/no-button.svg"/>](https://www.devexpress.com/support/examples/survey.xml?utm_source=github&utm_campaign=XAF_logon-form-manage-users-register-a-new-user-restore-a-password&~~~was_helpful=no)
 
